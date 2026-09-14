@@ -12,6 +12,8 @@ on an old 2.2 GHz i7.  The solution that should be returned is 8.
 8 0 5 7
 8 0 4 7
 '''
+import cProfile
+import collections
 
 def get_neighbors(state):
     neighbors = []
@@ -32,19 +34,20 @@ def not_in(element, collection):
 
 
 def bfs(current, goal, forbiddens):
-    frontier = []
+    frontier = collections.deque()#[]
     frontier.append((current, 0))
-    visited = []
+    visited = {}
     solved = False
 
     while len(frontier) > 0:
-        state, steps = frontier.pop(0)
+        state, steps = frontier.popleft()
         if state == goal:
             print(steps)
             solved = True
             break
 
-        visited.append(state)
+        #visited.append(state)
+        visited[state] = 1
 
         for neighbor in get_neighbors(state):
             if not_in(neighbor, visited):
@@ -72,4 +75,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    cProfile.run('main()')
