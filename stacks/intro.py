@@ -25,7 +25,7 @@
 # * Inserting an element at the front is O(n) all the time
 
 # A singly-linked list node
-class SinglyLLNode(object):
+class SinglyLinkedNode(object):
     def __init__(self, element, next):
         self._data = element
         self._reference_to_next = next
@@ -34,7 +34,7 @@ class SinglyLLNode(object):
 # A singly-linked list
 class SinglyLinkedList(object):
     def __init__(self, element):
-        self._head = SinglyLLNode(element, None)
+        self._head = SinglyLinkedNode(element, None)
 
     def append(self, element):
         # Skip over all LLNodes until you reach "the end"
@@ -44,7 +44,7 @@ class SinglyLinkedList(object):
             cursor = cursor._reference_to_next
         
         # Create a new node and make the last old node point to it
-        new_node = SinglyLLNode(element, None)
+        new_node = SinglyLinkedNode(element, None)
         cursor._reference_to_next = new_node
 
     def get(self, index):
@@ -57,14 +57,62 @@ class SinglyLinkedList(object):
         return cursor._data
 
 
-class DoublyLLNode(object):
+class DoublyLinkedNode(object):
     def __init__(self, element, next, prev):
-        # Try to implement this before the next class (Friday)
-        pass
+        self._data = element
+        self._reference_to_next = next
+        self._reference_to_prev = prev
 
+class DoublyLinkedList(object):
+    def __init__(self, element):
+        self._head = DoublyLinkedNode(element, None, None)
+        self._tail = self._head
+
+    def append(self, element):
+        new_node = DoublyLinkedNode(element, None, self._tail)
+        self._tail._reference_to_next = new_node
+        self._tail = new_node
+
+    # If you want to, feel free to modify this so that it starts
+    # from the back in cases where index > length / 2
+    def get(self, index):
+        return self._get_node(index)._data
+
+    # Inserts the given 'element' into position 'index' of the
+    # linked list
+    def insert(self, element, index):
+        # Step 1: move 'cursor' to the current node at position 'index'
+        cursor = self._get_node(index)
+
+        # Step 2: Create new node with appropriate references
+        new_node = DoublyLinkedNode(element, cursor, cursor._reference_to_prev)
+
+        # Step 3: update the cursor's previous
+        cursor._reference_to_prev._reference_to_next = new_node
+
+        # Step 4: Update the current cursor's references
+        cursor._reference_to_prev = new_node
+
+    def _get_node(self, index):
+        cursor = self._head
+                
+        while index > 0:
+            cursor = cursor._reference_to_next
+            index = index - 1
+                
+        return cursor
 
 if __name__=='__main__':
     my_list = SinglyLinkedList(10)
     my_list.append(20)
     my_list.append(30)
     print(my_list.get(2))
+
+    my_list = DoublyLinkedList(0)
+    my_list.append(1)
+    my_list.append(2)
+    my_list.append(3)
+    print('Index 1 contains', my_list.get(1))
+    my_list.insert(100, 1)
+    print('Index 1 contains', my_list.get(1))
+    print('Index 2 contains', my_list.get(2))
