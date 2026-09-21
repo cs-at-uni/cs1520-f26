@@ -17,7 +17,7 @@ def feeding_friends(friends, sandwiches):
     while(len(friends) > 0 and passes_left > 0):
         friend = friends.pop(0)
 
-        if friend == sandwiches.get(-1):
+        if friend == sandwiches[-1]:
             sandwiches.pop()
             passes_left = len(friends)
         else:
@@ -33,7 +33,7 @@ def feeding_friends(friends, sandwiches):
 
 class FeedingFriendsTester(unittest.TestCase):
     def test_all_eat(self):
-        self.assertFalse(True)
+        self.assertEqual(feeding_friends([1,1], [0,0]), 2)
 
 if __name__=='__main__':
     unittest.main()
