@@ -26,6 +26,9 @@ class BinaryTreeNode():
     def setRight(self, right):
         self._right = right
 
+    def __gt__(self, other_node):
+        return self._element > other_node._element
+
 class BinaryTree():
     def __init__(self):
         self._root = None
