@@ -36,7 +36,29 @@ def cheapest_path_memoized(grid):
 
     return cheapest_path_recursive_memoized(grid, 0, 0)
 
+def fibonacci_naive(n):
+    if n < 1:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fibonacci_naive(n-1) + fibonacci_naive(n-2)
+
+fib_cache = [0, 1] + [-1] * 100
+
+def fibonacci_memoized(n):
+    if fib_cache[n] == -1:
+        fib_cache[n] = fibonacci_memoized(n-1) + fibonacci_memoized(n-2)
+
+    return fib_cache[n]
+
 if __name__=='__main__':
     print( cheapest_path_memoized([[1, 4,  2, 8],
                                    [2, 12, 1, 3],
                                    [5, 1,  1, 1]]) )
+    print( cheapest_path([[1, 4,  2, 8],
+                          [2, 12, 1, 3],
+                          [5, 1,  1, 1]]) )
+
+    print(fibonacci_memoized(100))
+    print(fibonacci_naive(100))
